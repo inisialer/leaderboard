@@ -19,9 +19,15 @@ TextStyle base14w600 = GoogleFonts.rubik(
     color: baseColor, fontSize: 14, fontWeight: FontWeight.w600);
 TextStyle black14w400 = GoogleFonts.rubik(
     color: blackColor, fontSize: 14, fontWeight: FontWeight.w400);
+TextStyle black14w600 = GoogleFonts.rubik(
+    color: blackColor, fontSize: 14, fontWeight: FontWeight.w600);
+TextStyle black16w600 = GoogleFonts.rubik(
+    color: blackColor, fontSize: 16, fontWeight: FontWeight.w600);
 
 TextStyle semiBlack12w400 = GoogleFonts.rubik(
     color: semiBlackColor, fontSize: 12, fontWeight: FontWeight.w400);
+TextStyle semiBlack14w400 = GoogleFonts.rubik(
+    color: semiBlackColor, fontSize: 14, fontWeight: FontWeight.w400);
 
 TextStyle red9w600 = GoogleFonts.rubik(
     color: redColor, fontSize: 9, fontWeight: FontWeight.w600);

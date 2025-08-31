@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
+import 'package:leaderboard_app/helper/global_function.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/ui/home/components/card_podium.dart';
 import 'package:leaderboard_app/ui/home/components/card_winner.dart';
@@ -32,15 +33,20 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           actions: [
-            Container(
-              padding: EdgeInsets.all(4),
-              margin: EdgeInsets.only(right: 16),
-              decoration: BoxDecoration(
-                  color: darkPurpleColor,
-                  borderRadius: BorderRadius.circular(8)),
-              child: SvgPicture.asset(
-                'assets/icons/ic_group.svg',
-                width: 20,
+            InkWell(
+              onTap: () {
+                showPointRulesDialog(context);
+              },
+              child: Container(
+                padding: EdgeInsets.all(4),
+                margin: EdgeInsets.only(right: 16),
+                decoration: BoxDecoration(
+                    color: darkPurpleColor,
+                    borderRadius: BorderRadius.circular(8)),
+                child: SvgPicture.asset(
+                  'assets/icons/ic_group.svg',
+                  width: 20,
+                ),
               ),
             )
           ],

@@ -40,6 +40,7 @@ dependencies:
   flutter_bloc:
   flutter_svg: 
   sliding_up_panel:
+  dotted_line: ^3.2.3
 
 dev_dependencies:
   flutter_test:
