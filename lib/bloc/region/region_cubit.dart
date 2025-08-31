@@ -3,7 +3,7 @@ import 'package:leaderboard_app/bloc/region/region_state.dart';
 import 'package:leaderboard_app/model/region_dummy.dart';
 
 class RegionCubit extends Cubit<RegionState> {
-  RegionCubit() : super(RegionState());
+  RegionCubit() : super(RegionState.initial());
 
   void selectTempIndex(int index) {
     emit(state.copyWith(selectedIndex: index));

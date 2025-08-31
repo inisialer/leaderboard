@@ -98,13 +98,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       },
                     ),
-                    BlocBuilder<CategorySportCubit, CategorySportState?>(
-                      builder: (context, region) {
-                        return CardDropdown(
-                          title:
-                              region?.appliedCategorySport?.name ?? 'Komunitas',
-                          onTap: () {
-                            showCategorySportPicker(context);
+                    BlocBuilder<SportCubit, SportState?>(
+                      builder: (context, sport) {
+                        final isMiniSoccer =
+                            sport?.appliedSport?.name == 'Mini Soccer' ||
+                                sport?.appliedSport?.name == null;
+                        if (isMiniSoccer) return const SizedBox.shrink();
+                        return BlocBuilder<CategorySportCubit,
+                            CategorySportState?>(
+                          builder: (context, categoryState) {
+                            return CardDropdown(
+                              title:
+                                  categoryState?.appliedCategorySport?.name ??
+                                      'Komunitas',
+                              onTap: () {
+                                showCategorySportPicker(context);
+                              },
+                            );
                           },
                         );
                       },
@@ -121,7 +131,59 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                CardWinner(),
+                BlocBuilder<SportCubit, SportState?>(
+                  builder: (context, sport) {
+                    final isMiniSoccer =
+                        sport?.appliedSport?.name == 'Mini Soccer' ||
+                            sport?.appliedSport?.name == null;
+                    return BlocBuilder<CategorySportCubit, CategorySportState?>(
+                      builder: (context, categoryState) {
+                        return !categoryState!
+                                        .appliedCategorySport!.isIndividu &&
+                                    !categoryState
+                                        .appliedCategorySport!.isTunggal ||
+                                isMiniSoccer
+                            ? CardWinner(
+                                type: WinnerType.soccer,
+                                title: 'Far East United',
+                                subtitle: 'Surabaya',
+                                images: ['assets/images/img_avatar1.png'],
+                                points: 50,
+                                rank: 456,
+                                onShare: () {
+                                  print('Share komunitas!');
+                                },
+                              )
+                            : categoryState.appliedCategorySport!.isIndividu &&
+                                    categoryState
+                                        .appliedCategorySport!.isTunggal
+                                ? CardWinner(
+                                    type: WinnerType.single,
+                                    title: 'Budiman / Ravi',
+                                    subtitle: '@budimantanu / @raviahmad',
+                                    images: [
+                                      'assets/images/img_avatar6.png',
+                                    ],
+                                    points: 50,
+                                    rank: 456,
+                                    onShare: () {},
+                                  )
+                                : CardWinner(
+                                    type: WinnerType.duo,
+                                    title: 'Budiman / Ravi',
+                                    subtitle: '@budimantanu / @raviahmad',
+                                    images: [
+                                      'assets/images/img_avatar6.png',
+                                      'assets/images/img_avatar8.png',
+                                    ],
+                                    points: 50,
+                                    rank: 456,
+                                    onShare: () {},
+                                  );
+                      },
+                    );
+                  },
+                ),
                 const SizedBox(
                   height: 12.0,
                 ),

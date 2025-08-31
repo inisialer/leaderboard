@@ -22,4 +22,9 @@ class RegionState {
       searchQuery: searchQuery ?? this.searchQuery,
     );
   }
+
+  factory RegionState.initial() {
+    return RegionState(
+        selectedIndex: 0, appliedRegion: allRegions[7], searchQuery: '');
+  }
 }

@@ -3,7 +3,7 @@ import 'package:leaderboard_app/bloc/category/category_state.dart';
 import 'package:leaderboard_app/model/category_dummy.dart';
 
 class CategorySportCubit extends Cubit<CategorySportState> {
-  CategorySportCubit() : super(CategorySportState());
+  CategorySportCubit() : super(CategorySportState.initial());
 
   void selectTempIndex(int index) {
     emit(state.copyWith(selectedIndex: index));

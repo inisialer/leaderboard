@@ -73,7 +73,7 @@ class CategorySportFilterDialog extends StatelessWidget {
                 child: Column(
                   children: [
                     ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                      contentPadding: EdgeInsets.only(left: 16),
                       title: Text(
                         sport.name,
                         style: GoogleFonts.rubik(
@@ -106,7 +106,7 @@ class CategorySportFilterDialog extends StatelessWidget {
               final index = entry.key;
               final sport = entry.value;
               return ListTile(
-                contentPadding: EdgeInsets.only(right: 24),
+                contentPadding: EdgeInsets.only(right: 8),
                 title: Text(
                   sport.name,
                   style: GoogleFonts.rubik(
