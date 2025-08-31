@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:leaderboard_app/bloc/period/period_cubit.dart';
 import 'package:leaderboard_app/bloc/period/period_state.dart';
+import 'package:leaderboard_app/bloc/sport/sport_cubit.dart';
+import 'package:leaderboard_app/bloc/sport/sport_state.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/global_function.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
@@ -82,9 +84,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   spacing: 4,
                   children: [
-                    CardDropdown(
-                      title: 'Mini Soccer',
-                      onTap: () {},
+                    BlocBuilder<SportCubit, SportState?>(
+                      builder: (context, sport) {
+                        return CardDropdown(
+                          title: sport?.appliedSport?.name ?? 'Mini Soccer',
+                          onTap: () {
+                            showSportPicker(context);
+                          },
+                        );
+                      },
                     ),
                     CardDropdown(
                       title: 'Surabaya',

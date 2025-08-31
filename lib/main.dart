@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:leaderboard_app/bloc/period/period_cubit.dart';
+import 'package:leaderboard_app/bloc/sport/sport_cubit.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/ui/home/home_screen.dart';
@@ -16,8 +17,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => PeriodCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<PeriodCubit>(
+          create: (BuildContext context) => PeriodCubit(),
+        ),
+        BlocProvider<SportCubit>(
+          create: (BuildContext context) => SportCubit(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Leaderboard',
         theme: ThemeData(
