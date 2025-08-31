@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:leaderboard_app/bloc/period/period_cubit.dart';
+import 'package:leaderboard_app/bloc/period/period_state.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/global_function.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
@@ -21,16 +24,25 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           leading: Icon(Icons.arrow_back_ios),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 8,
-            children: [
-              Text(
-                '[CurrentSeason]',
-                style: white16w600,
-              ),
-              SvgPicture.asset('assets/icons/ic_play.svg')
-            ],
+          title: InkWell(
+            onTap: () {
+              showPeriodPicker(context);
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 8,
+              children: [
+                BlocBuilder<PeriodCubit, PeriodState?>(
+                  builder: (context, period) {
+                    return Text(
+                      period?.appliedPeriod?.name ?? "Current Season",
+                      style: white16w600,
+                    );
+                  },
+                ),
+                SvgPicture.asset('assets/icons/ic_play.svg')
+              ],
+            ),
           ),
           actions: [
             InkWell(

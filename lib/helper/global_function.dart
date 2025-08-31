@@ -1,8 +1,12 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:leaderboard_app/bloc/period/period_cubit.dart';
+import 'package:leaderboard_app/bloc/period/period_state.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
+import 'package:leaderboard_app/model/period_dummy.dart';
 import 'package:leaderboard_app/widgets/point_rule_tile.dart';
 
 void showPointRulesDialog(BuildContext context) {
@@ -116,6 +120,91 @@ void showPointRulesDialog(BuildContext context) {
       ],
     ),
   );
+}
+
+void showPeriodPicker(BuildContext context) {
+  final cubit = context.read<PeriodCubit>();
+
+  customBottomSheet(context,
+      BlocBuilder<PeriodCubit, PeriodState>(builder: (context, state) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        spacing: 16,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Periode",
+                style: black16w600,
+              ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+          ListView.separated(
+            separatorBuilder: (context, index) => Divider(
+              color: dividerColor,
+            ),
+            itemCount: dummyPeriods.length,
+            shrinkWrap: true,
+            physics: const ScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              final period = dummyPeriods[index];
+
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(period.range),
+                subtitle: period.isCurrent
+                    ? const Text(
+                        "Current Season",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      )
+                    : null,
+                trailing: Radio<int>(
+                  value: index,
+                  groupValue: state.selectedIndex ?? 2,
+                  onChanged: (val) {
+                    if (val != null) {
+                      cubit.selectTempIndex(val);
+                    }
+                  },
+                ),
+                onTap: () => cubit.selectTempIndex(index),
+              );
+            },
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                cubit.applyPeriod(dummyPeriods);
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: baseColor,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: Text(
+                "Terapkan",
+                style: white14w400,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }));
 }
 
 void customBottomSheet(BuildContext context, Widget child) {
