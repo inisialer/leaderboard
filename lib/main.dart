@@ -5,6 +5,7 @@ import 'package:leaderboard_app/bloc/category/category_cubit.dart';
 import 'package:leaderboard_app/bloc/region/region_cubit.dart';
 import 'package:leaderboard_app/bloc/period/period_cubit.dart';
 import 'package:leaderboard_app/bloc/sport/sport_cubit.dart';
+import 'package:leaderboard_app/bloc/type-leaderboard/type_leaderboard_cubit.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/model/category_dummy.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<CategorySportCubit>(
           create: (BuildContext context) => CategorySportCubit(),
+        ),
+        BlocProvider<TypeLeaderboardCubit>(
+          create: (BuildContext context) => TypeLeaderboardCubit(),
         ),
       ],
       child: MaterialApp(

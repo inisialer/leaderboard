@@ -19,6 +19,7 @@ class CardDropdown extends StatelessWidget {
           children: [
             Text(
               title,
+              overflow: TextOverflow.ellipsis,
               style: black14w400,
             ),
             Icon(

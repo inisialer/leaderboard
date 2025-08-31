@@ -6,6 +6,7 @@ import 'package:leaderboard_app/bloc/category/category_cubit.dart';
 import 'package:leaderboard_app/bloc/region/region_cubit.dart';
 import 'package:leaderboard_app/bloc/period/period_cubit.dart';
 import 'package:leaderboard_app/bloc/sport/sport_cubit.dart';
+import 'package:leaderboard_app/bloc/type-leaderboard/type_leaderboard_cubit.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/widgets/category_sport_filter_dialog.dart';
@@ -13,6 +14,7 @@ import 'package:leaderboard_app/widgets/period_filter_dialog.dart';
 import 'package:leaderboard_app/widgets/point_rule_tile.dart';
 import 'package:leaderboard_app/widgets/region_filter_dialog.dart';
 import 'package:leaderboard_app/widgets/sport_filter_dialog.dart';
+import 'package:leaderboard_app/widgets/type_leaderboard_filter_dialog.dart';
 
 void showPointRulesDialog(BuildContext context) {
   customBottomSheet(
@@ -150,6 +152,12 @@ void showCategorySportPicker(BuildContext context) {
   final cubit = context.read<CategorySportCubit>();
 
   customBottomSheet(context, CategorySportFilterDialog(cubit: cubit));
+}
+
+void showTypeLeaderboardPicker(BuildContext context) {
+  final cubit = context.read<TypeLeaderboardCubit>();
+
+  customBottomSheet(context, TypeLeaderboardFilterDialog(cubit: cubit));
 }
 
 void customBottomSheet(BuildContext context, Widget child) {

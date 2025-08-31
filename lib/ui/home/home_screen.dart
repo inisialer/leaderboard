@@ -9,6 +9,8 @@ import 'package:leaderboard_app/bloc/period/period_cubit.dart';
 import 'package:leaderboard_app/bloc/period/period_state.dart';
 import 'package:leaderboard_app/bloc/sport/sport_cubit.dart';
 import 'package:leaderboard_app/bloc/sport/sport_state.dart';
+import 'package:leaderboard_app/bloc/type-leaderboard/type_leaderboard_cubit.dart';
+import 'package:leaderboard_app/bloc/type-leaderboard/type_leaderboard_state.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/global_function.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
@@ -129,6 +131,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       },
                     ),
+                    // BlocBuilder<TypeLeaderboardCubit, TypeLeaderboardState?>(
+                    //   builder: (context, region) {
+                    //     return CardDropdown(
+                    //       title:
+                    //           region?.appliedTypeLeaderboard?.name ?? 'Overall',
+                    //       onTap: () {
+                    //         showTypeLeaderboardPicker(context);
+                    //       },
+                    //     );
+                    //   },
+                    // ),
                   ],
                 ),
                 BlocBuilder<SportCubit, SportState?>(
