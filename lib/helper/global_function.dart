@@ -2,12 +2,16 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:leaderboard_app/bloc/category/category_cubit.dart';
+import 'package:leaderboard_app/bloc/region/region_cubit.dart';
 import 'package:leaderboard_app/bloc/period/period_cubit.dart';
 import 'package:leaderboard_app/bloc/sport/sport_cubit.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
+import 'package:leaderboard_app/widgets/category_sport_filter_dialog.dart';
 import 'package:leaderboard_app/widgets/period_filter_dialog.dart';
 import 'package:leaderboard_app/widgets/point_rule_tile.dart';
+import 'package:leaderboard_app/widgets/region_filter_dialog.dart';
 import 'package:leaderboard_app/widgets/sport_filter_dialog.dart';
 
 void showPointRulesDialog(BuildContext context) {
@@ -133,6 +137,19 @@ void showSportPicker(BuildContext context) {
   final cubit = context.read<SportCubit>();
 
   customBottomSheet(context, SportFilterDialog(cubit: cubit));
+}
+
+void showRegionPicker(BuildContext context) {
+  final cubit = context.read<RegionCubit>();
+  cubit.setSearchQuery('');
+
+  customBottomSheet(context, RegionFilterDialog(cubit: cubit));
+}
+
+void showCategorySportPicker(BuildContext context) {
+  final cubit = context.read<CategorySportCubit>();
+
+  customBottomSheet(context, CategorySportFilterDialog(cubit: cubit));
 }
 
 void customBottomSheet(BuildContext context, Widget child) {

@@ -31,3 +31,8 @@ TextStyle semiBlack14w400 = GoogleFonts.rubik(
 
 TextStyle red9w600 = GoogleFonts.rubik(
     color: redColor, fontSize: 9, fontWeight: FontWeight.w600);
+
+TextStyle greyBlack10w200 = GoogleFonts.roboto(
+    color: greyBlackColor, fontSize: 10, fontWeight: FontWeight.w200);
+TextStyle lightGrey16w400 = GoogleFonts.roboto(
+    color: lightGrey, fontSize: 16, fontWeight: FontWeight.w400);

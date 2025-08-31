@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:leaderboard_app/bloc/category/category_cubit.dart';
+import 'package:leaderboard_app/bloc/category/category_state.dart';
+import 'package:leaderboard_app/bloc/region/region_cubit.dart';
+import 'package:leaderboard_app/bloc/region/region_state.dart';
 import 'package:leaderboard_app/bloc/period/period_cubit.dart';
 import 'package:leaderboard_app/bloc/period/period_state.dart';
 import 'package:leaderboard_app/bloc/sport/sport_cubit.dart';
@@ -94,9 +98,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       },
                     ),
-                    CardDropdown(
-                      title: 'Surabaya',
-                      onTap: () {},
+                    BlocBuilder<CategorySportCubit, CategorySportState?>(
+                      builder: (context, region) {
+                        return CardDropdown(
+                          title:
+                              region?.appliedCategorySport?.name ?? 'Komunitas',
+                          onTap: () {
+                            showCategorySportPicker(context);
+                          },
+                        );
+                      },
+                    ),
+                    BlocBuilder<RegionCubit, RegionState?>(
+                      builder: (context, region) {
+                        return CardDropdown(
+                          title: region?.appliedRegion?.name ?? 'Surabaya',
+                          onTap: () {
+                            showRegionPicker(context);
+                          },
+                        );
+                      },
                     ),
                   ],
                 ),
