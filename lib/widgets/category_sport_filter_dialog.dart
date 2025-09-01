@@ -1,16 +1,12 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:leaderboard_app/bloc/category/category_cubit.dart';
-import 'package:leaderboard_app/bloc/category/category_state.dart';
-import 'package:leaderboard_app/bloc/sport/sport_cubit.dart';
-import 'package:leaderboard_app/bloc/sport/sport_state.dart';
+import 'package:leaderboard_app/bloc/filter/filter_cubit.dart';
+import 'package:leaderboard_app/bloc/filter/filter_state.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/model/category_dummy.dart';
-import 'package:leaderboard_app/model/sport_dummy.dart';
 
 class CategorySportFilterDialog extends StatelessWidget {
   const CategorySportFilterDialog({
@@ -18,12 +14,11 @@ class CategorySportFilterDialog extends StatelessWidget {
     required this.cubit,
   });
 
-  final CategorySportCubit cubit;
+  final FilterCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategorySportCubit, CategorySportState>(
-        builder: (context, state) {
+    return BlocBuilder<FilterCubit, FilterState>(builder: (context, state) {
       return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,14 +76,14 @@ class CategorySportFilterDialog extends StatelessWidget {
                       ),
                       trailing: Radio<int>(
                         value: index,
-                        groupValue: state.selectedIndex,
+                        groupValue: state.selectedCategory,
                         onChanged: (val) {
                           if (val != null) {
-                            cubit.selectTempIndex(val);
+                            cubit.updateSelectedCategory(val);
                           }
                         },
                       ),
-                      onTap: () => cubit.selectTempIndex(index),
+                      onTap: () => cubit.updateSelectedCategory(index),
                     ),
                     const Divider(
                       height: 0,
@@ -114,24 +109,26 @@ class CategorySportFilterDialog extends StatelessWidget {
                 ),
                 trailing: Radio<int>(
                   value: index,
-                  groupValue: state.selectedIndex,
+                  groupValue: state.selectedCategory,
                   onChanged: (val) {
                     if (val != null) {
-                      cubit.selectTempIndex(val);
+                      cubit.updateSelectedCategory(val);
                     }
                   },
                 ),
-                onTap: () => cubit.selectTempIndex(index),
+                onTap: () => cubit.updateSelectedCategory(index),
               );
             }),
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: state.selectedIndex == null
+                onPressed: state.selectedCategory == null
                     ? null
                     : () {
-                        cubit.applyCategorySport(allCategorySports);
+                        cubit.updateCategory(
+                            allCategorySports[state.selectedCategory ?? 0]
+                                .name);
                         Navigator.pop(context);
                       },
                 style: ElevatedButton.styleFrom(

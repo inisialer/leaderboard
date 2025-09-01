@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
-
-enum WinnerType { soccer, duo, single }
+import 'package:leaderboard_app/ui/home/components/card_podium.dart';
 
 class CardWinner extends StatelessWidget {
   final WinnerType type;
@@ -17,6 +16,7 @@ class CardWinner extends StatelessWidget {
   final int points;
   final int rank;
   final VoidCallback? onShare;
+  final VoidCallback? onTapArrow;
 
   const CardWinner({
     super.key,
@@ -27,6 +27,7 @@ class CardWinner extends StatelessWidget {
     required this.points,
     required this.rank,
     this.onShare,
+    this.onTapArrow,
   });
 
   @override
@@ -45,19 +46,35 @@ class CardWinner extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: ListTile(
-              leading: _buildAvatar(),
+              leading: Padding(
+                padding:
+                    EdgeInsets.only(right: type == WinnerType.duo ? 16.0 : 0),
+                child: _buildAvatar(),
+              ),
               title: Text(title, style: black14w400),
               subtitle: Text(subtitle, style: semiBlack12w400),
-              trailing: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                decoration: BoxDecoration(
-                  color: baseColor,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  '$points Pts',
-                  style: white9w800,
-                ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: baseColor,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      '$points Pts',
+                      style: white9w800,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 8.0,
+                  ),
+                  InkWell(
+                      onTap: onTapArrow,
+                      child: Icon(Icons.keyboard_arrow_down_sharp))
+                ],
               ),
             ),
           ),

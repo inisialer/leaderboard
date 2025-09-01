@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 
+enum WinnerType { single, duo, soccer }
+
 class CardPodium extends StatelessWidget {
   const CardPodium({
     super.key,
     required this.rank,
     required this.height,
     required this.name,
-    required this.imageUrl,
     required this.points,
+    required this.type,
+    required this.images,
   });
+
   final int rank;
   final double height;
   final String name;
-  final String imageUrl;
   final String points;
+  final WinnerType type;
+  final List<String> images;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +30,8 @@ class CardPodium extends StatelessWidget {
           height: 60,
           child: Stack(
             children: [
-              CircleAvatar(
-                radius: 28,
-                backgroundImage: AssetImage(imageUrl),
-              ),
+              Positioned.fill(
+                  left: type == WinnerType.duo ? 20 : 0, child: _buildAvatar()),
               if (rank == 1)
                 Positioned(
                   right: 0,
@@ -39,7 +42,7 @@ class CardPodium extends StatelessWidget {
                     'assets/images/img_crown.png',
                     scale: 4,
                   ),
-                )
+                ),
             ],
           ),
         ),
@@ -72,5 +75,45 @@ class CardPodium extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildAvatar() {
+    Widget buildCircle(String image, {double left = 0}) {
+      return Positioned(
+        left: left,
+        child: Container(
+          width: 36,
+          height: 36,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Colors.white,
+              width: 2,
+            ),
+            image: DecorationImage(
+              image: AssetImage(image),
+            ),
+          ),
+        ),
+      );
+    }
+
+    switch (type) {
+      case WinnerType.duo:
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            buildCircle(images[0]),
+            if (images.length > 1) buildCircle(images[1], left: 20),
+          ],
+        );
+      case WinnerType.single:
+      case WinnerType.soccer:
+      default:
+        return CircleAvatar(
+          radius: 28,
+          backgroundImage: AssetImage(images.first),
+        );
+    }
   }
 }

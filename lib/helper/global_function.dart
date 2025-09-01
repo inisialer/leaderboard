@@ -9,6 +9,7 @@ import 'package:leaderboard_app/bloc/type-leaderboard/type_leaderboard_cubit.dar
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/widgets/category_sport_filter_dialog.dart';
+import 'package:leaderboard_app/widgets/leaderboard_item_filter_dialog.dart';
 import 'package:leaderboard_app/widgets/period_filter_dialog.dart';
 import 'package:leaderboard_app/widgets/point_rule_tile.dart';
 import 'package:leaderboard_app/widgets/region_filter_dialog.dart';
@@ -141,14 +142,14 @@ void showSportPicker(BuildContext context) {
 }
 
 void showRegionPicker(BuildContext context) {
-  final cubit = context.read<RegionCubit>();
+  final cubit = context.read<FilterCubit>();
   cubit.setSearchQuery('');
 
   customBottomSheet(context, RegionFilterDialog(cubit: cubit));
 }
 
 void showCategorySportPicker(BuildContext context) {
-  final cubit = context.read<CategorySportCubit>();
+  final cubit = context.read<FilterCubit>();
 
   customBottomSheet(context, CategorySportFilterDialog(cubit: cubit));
 }
@@ -157,6 +158,12 @@ void showTypeLeaderboardPicker(BuildContext context) {
   final cubit = context.read<TypeLeaderboardCubit>();
 
   customBottomSheet(context, TypeLeaderboardFilterDialog(cubit: cubit));
+}
+
+void showLeaderboardItemPicker(BuildContext context) {
+  final cubit = context.read<FilterCubit>();
+
+  customBottomSheet(context, LeaderboardItemFilterDialog(cubit: cubit));
 }
 
 void customBottomSheet(BuildContext context, Widget child) {
@@ -170,4 +177,15 @@ void customBottomSheet(BuildContext context, Widget child) {
       builder: (context) {
         return Padding(padding: const EdgeInsets.all(16), child: child);
       });
+}
+
+String getItemImage(Map<String, dynamic> item) {
+  if (item.containsKey('image')) {
+    return item['image']; // tunggal / komunitas
+  } else if (item.containsKey('players') &&
+      (item['players'] as List).isNotEmpty) {
+    return (item['players'] as List)
+        .first['image']; // ganda, ambil player pertama
+  }
+  return 'assets/images/default.png'; // fallback
 }

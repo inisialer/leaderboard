@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:leaderboard_app/bloc/filter/filter_cubit.dart';
+import 'package:leaderboard_app/bloc/filter/filter_state.dart';
 import 'package:leaderboard_app/bloc/region/region_cubit.dart';
 import 'package:leaderboard_app/bloc/region/region_state.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
@@ -16,11 +20,11 @@ class RegionFilterDialog extends StatelessWidget {
     required this.cubit,
   });
 
-  final RegionCubit cubit;
+  final FilterCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegionCubit, RegionState>(builder: (context, state) {
+    return BlocBuilder<FilterCubit, FilterState>(builder: (context, state) {
       final filteredRegions = allRegions
           .where((region) => region.name
               .toLowerCase()
@@ -80,29 +84,32 @@ class RegionFilterDialog extends StatelessWidget {
                   ),
                   itemBuilder: (context, index) {
                     final region = filteredRegions[index];
-                    final isSelected = state.appliedRegion == region;
+                    final isSelected = state.region == region.name;
 
                     return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      title: Text(
-                        region.name,
-                        style: TextStyle(
-                          color: isSelected
-                              ? const Color(0xff7A5AF8)
-                              : const Color(0xff52575C),
-                          fontWeight:
-                              isSelected ? FontWeight.bold : FontWeight.normal,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
                         ),
-                      ),
-                      onTap: () {
-                        cubit.selectTempIndex(allRegions.indexOf(region));
-                        cubit.applyRegion(allRegions);
-                        Navigator.pop(context);
-                      },
-                    );
+                        title: Text(
+                          region.name,
+                          style: TextStyle(
+                            color: isSelected
+                                ? const Color(0xff7A5AF8)
+                                : const Color(0xff52575C),
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                          ),
+                        ),
+                        onTap: () {
+                          final selected = filteredRegions[index];
+                          log(selected.name); // ✅ sesuai search
+                          cubit.updateSelectedRegion(
+                              allRegions.indexOf(selected));
+                          cubit.updateRegion(selected.name);
+                          Navigator.pop(context);
+                        });
                   },
                 )
               : Wrap(
@@ -110,12 +117,15 @@ class RegionFilterDialog extends StatelessWidget {
                   runSpacing: 8,
                   children: List.generate(allRegions.length, (index) {
                     final region = allRegions[index];
-                    final isSelected = state.appliedRegion == region;
+                    final isSelected = state.region == region.name;
 
                     return GestureDetector(
                       onTap: () {
-                        cubit.selectTempIndex(index);
-                        cubit.applyRegion(allRegions);
+                        final selected = allRegions[index];
+                        log(selected
+                            .name); // ✅ Sekarang bakal log sesuai yg diklik
+                        cubit.updateSelectedRegion(index);
+                        cubit.updateRegion(selected.name);
                         Navigator.pop(context);
                       },
                       child: Container(

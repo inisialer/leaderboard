@@ -104,41 +104,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                 ),
 
-                                BlocBuilder<SportCubit, SportState?>(
-                                  builder: (context, sport) {
-                                    final isMiniSoccer =
-                                        sport?.appliedSport?.name ==
-                                                'Mini Soccer' ||
-                                            sport?.appliedSport?.name == null;
-                                    if (isMiniSoccer)
-                                      return const SizedBox.shrink();
-                                    return BlocBuilder<CategorySportCubit,
-                                        CategorySportState?>(
-                                      builder: (context, categoryState) {
-                                        return CardDropdown(
-                                          title: categoryState
-                                                  ?.appliedCategorySport
-                                                  ?.name ??
-                                              'Komunitas',
-                                          onTap: () {
-                                            showCategorySportPicker(context);
-                                          },
-                                        );
-                                      },
-                                    );
+                                CardDropdown(
+                                  title: state.category ?? 'Komunitas',
+                                  onTap: () {
+                                    showCategorySportPicker(context);
                                   },
                                 ),
-                                BlocBuilder<RegionCubit, RegionState?>(
-                                  builder: (context, region) {
-                                    return CardDropdown(
-                                      title: region?.appliedRegion?.name ??
-                                          'Surabaya',
-                                      onTap: () {
-                                        showRegionPicker(context);
-                                      },
-                                    );
+                                CardDropdown(
+                                  title: state.region ?? 'Surabaya',
+                                  onTap: () {
+                                    showRegionPicker(context);
                                   },
                                 ),
+
                                 // BlocBuilder<TypeLeaderboardCubit, TypeLeaderboardState?>(
                                 //   builder: (context, region) {
                                 //     return CardDropdown(
@@ -153,63 +131,92 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ),
-                          BlocBuilder<SportCubit, SportState?>(
-                            builder: (context, sport) {
+                          BlocBuilder<FilterCubit, FilterState>(
+                            builder: (context, filterState) {
+                              final selectedCategory =
+                                  filterState.category?.toLowerCase() ?? '';
+                              final selectedSport =
+                                  filterState.sport?.toLowerCase() ?? '';
+                              final selectedRegion = filterState.region ?? '';
+
                               final isMiniSoccer =
-                                  sport?.appliedSport?.name == 'Mini Soccer' ||
-                                      sport?.appliedSport?.name == null;
-                              return BlocBuilder<CategorySportCubit,
-                                  CategorySportState?>(
-                                builder: (context, categoryState) {
-                                  return !categoryState!.appliedCategorySport!
-                                                  .isIndividu &&
-                                              !categoryState
-                                                  .appliedCategorySport!
-                                                  .isTunggal ||
-                                          isMiniSoccer
-                                      ? CardWinner(
-                                          type: WinnerType.soccer,
-                                          title: 'Far East United',
-                                          subtitle: 'Surabaya',
-                                          images: [
-                                            'assets/images/img_avatar1.png'
-                                          ],
-                                          points: 50,
-                                          rank: 456,
-                                          onShare: () {
-                                            print('Share komunitas!');
-                                          },
-                                        )
-                                      : categoryState.appliedCategorySport!
-                                                  .isIndividu &&
-                                              categoryState
-                                                  .appliedCategorySport!
-                                                  .isTunggal
-                                          ? CardWinner(
-                                              type: WinnerType.single,
-                                              title: 'Budiman / Ravi',
-                                              subtitle:
-                                                  '@budimantanu / @raviahmad',
-                                              images: [
-                                                'assets/images/img_avatar6.png',
-                                              ],
-                                              points: 50,
-                                              rank: 456,
-                                              onShare: () {},
-                                            )
-                                          : CardWinner(
-                                              type: WinnerType.duo,
-                                              title: 'Budiman / Ravi',
-                                              subtitle:
-                                                  '@budimantanu / @raviahmad',
-                                              images: [
-                                                'assets/images/img_avatar6.png',
-                                                'assets/images/img_avatar8.png',
-                                              ],
-                                              points: 50,
-                                              rank: 456,
-                                              onShare: () {},
-                                            );
+                                  selectedSport == 'mini soccer';
+                              final isTunggal = selectedCategory == 'tunggal';
+                              final isGanda = selectedCategory == 'ganda' ||
+                                  selectedCategory == 'double';
+
+                              // Ambil item pertama dari filteredLeaderboard
+                              final sportData =
+                                  filterState.filteredLeaderboard.isNotEmpty
+                                      ? filterState.filteredLeaderboard.first
+                                      : null;
+
+                              final firstItem = sportData != null &&
+                                      (sportData['leaderboard'] as List)
+                                          .isNotEmpty
+                                  ? (sportData['leaderboard'] as List).first
+                                  : null;
+
+                              // Tentukan subtitle sesuai tipe
+                              String subtitle;
+                              if (isMiniSoccer) {
+                                subtitle = selectedRegion.isNotEmpty
+                                    ? selectedRegion
+                                    : 'Unknown';
+                              } else if (isTunggal) {
+                                subtitle = firstItem?['team'] ??
+                                    firstItem?['player'] ??
+                                    '-';
+                              } else if (isGanda) {
+                                final players = firstItem?['players'] as List?;
+                                subtitle = players != null &&
+                                        players.length >= 2
+                                    ? '@${players[0]['name']} / @${players[1]['name']}'
+                                    : '-';
+                              } else {
+                                subtitle = '-';
+                              }
+
+                              // Tentukan images sesuai tipe
+                              List<String> images;
+                              if (isMiniSoccer) {
+                                images = [
+                                  firstItem?['image'] ??
+                                      'assets/images/img_avatar1.png'
+                                ];
+                              } else if (isTunggal) {
+                                images = [
+                                  firstItem?['image'] ??
+                                      'assets/images/img_avatar6.png'
+                                ];
+                              } else {
+                                final players = firstItem?['players'] as List?;
+                                images = players != null && players.length >= 2
+                                    ? [players[0]['image'], players[1]['image']]
+                                    : [
+                                        'assets/images/img_avatar6.png',
+                                        'assets/images/img_avatar8.png'
+                                      ];
+                              }
+
+                              return CardWinner(
+                                onTapArrow: () =>
+                                    showLeaderboardItemPicker(context),
+                                title: firstItem?['team'] ??
+                                    firstItem?['player'] ??
+                                    'Unknown',
+                                type: isMiniSoccer
+                                    ? WinnerType.soccer
+                                    : isTunggal
+                                        ? WinnerType.single
+                                        : WinnerType.duo,
+                                subtitle: subtitle,
+                                images: images,
+                                points: firstItem?['points'] ?? 0,
+                                rank: firstItem?['rank'] ?? 0,
+                                onShare: () {
+                                  print(
+                                      'Share ${isMiniSoccer ? 'komunitas' : 'individual'}!');
                                 },
                               );
                             },
@@ -217,45 +224,100 @@ class _HomeScreenState extends State<HomeScreen> {
                           const SizedBox(
                             height: 12.0,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            spacing: 16,
-                            children: [
-                              Expanded(
-                                child: CardPodium(
-                                    rank: 2,
-                                    height: 130,
-                                    name: sport['leaderboard'][1]['team'] ?? '',
-                                    imageUrl:
-                                        sport['leaderboard'][1]['image'] ?? '',
-                                    points: sport['leaderboard'][1]['points']
-                                            .toString() ??
-                                        ''),
-                              ),
-                              Expanded(
-                                child: CardPodium(
-                                    rank: 1,
-                                    height: 180,
-                                    name: sport['leaderboard'][0]['team'] ?? '',
-                                    imageUrl:
-                                        sport['leaderboard'][0]['image'] ?? '',
-                                    points: sport['leaderboard'][0]['points']
-                                            .toString() ??
-                                        ''),
-                              ),
-                              Expanded(
-                                child: CardPodium(
-                                    rank: 3,
-                                    height: 84,
-                                    name: sport['leaderboard'][2]['team'] ?? '',
-                                    imageUrl:
-                                        sport['leaderboard'][2]['image'] ?? '',
-                                    points: sport['leaderboard'][2]['points']
-                                            .toString() ??
-                                        ''),
-                              ),
-                            ],
+                          BlocBuilder<FilterCubit, FilterState>(
+                            builder: (context, filterState) {
+                              final filteredSports =
+                                  filterState.filteredLeaderboard;
+                              if (filteredSports.isEmpty)
+                                return const SizedBox();
+
+                              final sport = filteredSports.first;
+                              final leaderboard =
+                                  sport['leaderboard'] as List<dynamic>;
+
+                              WinnerType getWinnerType(
+                                  Map<String, dynamic> sport) {
+                                final type = (sport['type'] ?? '')
+                                    .toString()
+                                    .toLowerCase();
+                                final category = (sport['category'] ?? '')
+                                    .toString()
+                                    .toLowerCase();
+
+                                if (type == 'komunitas')
+                                  return WinnerType.soccer;
+                                if (category == 'tunggal' ||
+                                    category == 'single')
+                                  return WinnerType.single;
+                                return WinnerType.duo;
+                              }
+
+                              List<String> getImages(
+                                  Map<String, dynamic> item) {
+                                if (item.containsKey('players') &&
+                                    item['players'] is List) {
+                                  return List<String>.from(
+                                      (item['players'] as List)
+                                          .map((p) => p['image'] as String));
+                                }
+
+                                if (item.containsKey('image')) {
+                                  return [item['image'] as String];
+                                }
+
+                                return ['assets/images/default.png'];
+                              }
+
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                spacing: 16,
+                                children: [
+                                  if (leaderboard.length > 1)
+                                    Expanded(
+                                      child: CardPodium(
+                                        rank: 2,
+                                        height: 130,
+                                        name: leaderboard[1]['team'] ??
+                                            leaderboard[1]['player'] ??
+                                            '',
+                                        points:
+                                            leaderboard[1]['points'].toString(),
+                                        type: getWinnerType(sport),
+                                        images: getImages(leaderboard[1]),
+                                      ),
+                                    ),
+                                  if (leaderboard.isNotEmpty)
+                                    Expanded(
+                                      child: CardPodium(
+                                        rank: 1,
+                                        height: 180,
+                                        name: leaderboard[0]['team'] ??
+                                            leaderboard[0]['player'] ??
+                                            '',
+                                        points:
+                                            leaderboard[0]['points'].toString(),
+                                        type: getWinnerType(sport),
+                                        images: getImages(leaderboard[0]),
+                                      ),
+                                    ),
+                                  if (leaderboard.length > 2)
+                                    Expanded(
+                                      child: CardPodium(
+                                        rank: 3,
+                                        height: 100,
+                                        name: leaderboard[2]['team'] ??
+                                            leaderboard[2]['player'] ??
+                                            '',
+                                        points:
+                                            leaderboard[2]['points'].toString(),
+                                        type: getWinnerType(sport),
+                                        images: getImages(leaderboard[2]),
+                                      ),
+                                    ),
+                                ],
+                              );
+                            },
                           )
                         ],
                       ),
@@ -275,9 +337,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: ListView.separated(
-                              itemCount: (sport['leaderboard'] as List)
-                                  .sublist(3)
-                                  .length,
+                              itemCount:
+                                  (sport['leaderboard'] as List).length > 3
+                                      ? (sport['leaderboard'] as List)
+                                          .sublist(3)
+                                          .length
+                                      : 0,
                               separatorBuilder: (context, index) => SizedBox(
                                   height: 32,
                                   child: Divider(
@@ -286,8 +351,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               shrinkWrap: true,
                               physics: const ScrollPhysics(),
                               itemBuilder: (BuildContext context, int index) {
-                                final data = (sport?['leaderboard'] as List)
-                                    .sublist(3)[index];
+                                final data =
+                                    (sport?['leaderboard'] as List).length > 3
+                                        ? (sport?['leaderboard'] as List)
+                                            .sublist(3)[index]
+                                        : null;
+
+                                if (data == null) return SizedBox.shrink();
+
                                 return Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment:
@@ -298,7 +369,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       children: [
                                         Text('${index + 4}'),
                                         Image.asset(
-                                          data['image'],
+                                          getItemImage(data),
                                           width: 40,
                                         ),
                                         Column(

@@ -4,7 +4,8 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
     "sports": [
       {
         "name": "Mini Soccer",
-        "type": "Community",
+        "type": "Komunitas",
+        "category": "Komunitas",
         "region": "Surabaya",
         "leaderboard": [
           {
@@ -59,8 +60,8 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
       },
       {
         "name": "Badminton",
-        "type": "Individual",
-        "category": "Single",
+        "type": "Tunggal",
+        "category": "Tunggal",
         "region": "Jakarta",
         "leaderboard": [
           {
@@ -103,8 +104,8 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
       },
       {
         "name": "Tennis",
-        "type": "Individual",
-        "category": "Double",
+        "type": "Individu",
+        "category": "Ganda",
         "region": "Bandung",
         "leaderboard": [
           {
@@ -143,9 +144,9 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
     "sports": [
       {
         "name": "Padel",
-        "type": "Individual",
-        "category": "Double",
-        "region": "Bali",
+        "type": "Individu",
+        "category": "Ganda",
+        "region": "Bandung",
         "leaderboard": [
           {
             "rank": 1,
@@ -177,10 +178,65 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
         ],
       },
       {
-        "name": "Table Tennis",
+        "name": "Mini Soccer",
+        "type": "Komunitas",
+        "region": "Surabaya",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "team": "Surabaya United",
+            "points": 120,
+            "image": 'assets/images/img_avatar1.png'
+          },
+          {
+            "rank": 2,
+            "team": "Arek Suroboyo FC",
+            "points": 95,
+            "image": 'assets/images/img_avatar2.png'
+          },
+          {
+            "rank": 3,
+            "team": "Gresik Power",
+            "points": 80,
+            "image": 'assets/images/img_avatar3.png'
+          },
+          {
+            "rank": 4,
+            "team": "Sidoarjo Warriors",
+            "points": 75,
+            "image": "assets/images/img_avatar4.png"
+          },
+          {
+            "rank": 5,
+            "team": "Cahaya Badminton",
+            "points": 65,
+            "image": "assets/images/img_avatar11.png"
+          },
+          {
+            "rank": 6,
+            "team": "Malang Thunder",
+            "points": 50,
+            "image": "assets/images/img_avatar12.png"
+          },
+          {
+            "rank": 7,
+            "team": "Delta Force",
+            "points": 45,
+            "image": "assets/images/img_avatar13.png"
+          },
+          {
+            "rank": 8,
+            "team": "Lamongan Strike",
+            "points": 40,
+            "image": "assets/images/img_avatar14.png"
+          },
+        ],
+      },
+      {
+        "name": "Tennis Meja",
         "type": "Individual",
-        "category": "Single",
-        "region": "Medan",
+        "category": "Tunggal",
+        "region": "Jakarta",
         "leaderboard": [
           {
             "rank": 1,
@@ -222,7 +278,7 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
       },
       {
         "name": "Mini Soccer",
-        "type": "Community",
+        "type": "komunitas",
         "region": "Jakarta",
         "leaderboard": [
           {

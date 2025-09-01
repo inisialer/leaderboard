@@ -47,6 +47,18 @@ class FilterCubit extends Cubit<FilterState> {
     emit(state.copyWith(selectedRegion: selectedRegion));
   }
 
+  void setSearchQuery(String query) {
+    emit(state.copyWith(searchQuery: query));
+  }
+
+  void updateLeadeboardItem(Map<String, dynamic>? item) {
+    emit(state.copyWith(leaderboardItem: item));
+  }
+
+  void updateSelectedLeadeboardItem(int? selectedLeaderboardItem) {
+    emit(state.copyWith(selectedLeaderboardItem: selectedLeaderboardItem));
+  }
+
   void _applyFilter() {
     final season = state.season ?? "Current Season"; // default
     final seasonData = dummyLeaderboard.firstWhere(
@@ -75,7 +87,11 @@ class FilterCubit extends Cubit<FilterState> {
     }
 
     if (state.region != null) {
-      sports = sports.where((s) => s["region"] == state.region).toList();
+      sports = sports
+          .where((s) =>
+              s["region"].toString().toLowerCase() ==
+              state.region?.toLowerCase())
+          .toList();
     }
 
     emit(state.copyWith(filteredLeaderboard: sports));
