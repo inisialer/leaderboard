@@ -65,19 +65,19 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
         "leaderboard": [
           {
             "rank": 1,
-            "player": "Andi Prasetyo",
+            "team": "Andi Prasetyo",
             "points": 150,
             "image": 'assets/images/img_avatar5.png'
           },
           {
             "rank": 2,
-            "player": "Budi Santoso",
+            "team": "Budi Santoso",
             "points": 130,
             "image": 'assets/images/img_avatar6.png'
           },
           {
             "rank": 3,
-            "player": "Rizky Hidayat",
+            "team": "Rizky Hidayat",
             "points": 110,
             "image": 'assets/images/img_avatar7.png'
           },
