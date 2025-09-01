@@ -9,7 +9,7 @@ TextStyle white12w400 = GoogleFonts.rubik(
 TextStyle white12w800 = GoogleFonts.rubik(
     color: Colors.white, fontSize: 12, fontWeight: FontWeight.w800);
 TextStyle white14w400 = GoogleFonts.rubik(
-    color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600);
+    color: Colors.white, fontSize: 14, fontWeight: FontWeight.w400);
 TextStyle white16w600 = GoogleFonts.rubik(
     color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600);
 TextStyle white72w800 = GoogleFonts.rubik(

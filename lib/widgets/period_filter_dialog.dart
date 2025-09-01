@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:leaderboard_app/bloc/period/period_cubit.dart';
-import 'package:leaderboard_app/bloc/period/period_state.dart';
+import 'package:leaderboard_app/bloc/filter/filter_cubit.dart';
+import 'package:leaderboard_app/bloc/filter/filter_state.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/model/period_dummy.dart';
@@ -12,11 +12,11 @@ class PeriodFilterDialog extends StatelessWidget {
     required this.cubit,
   });
 
-  final PeriodCubit cubit;
+  final FilterCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PeriodCubit, PeriodState>(builder: (context, state) {
+    return BlocBuilder<FilterCubit, FilterState>(builder: (context, state) {
       return Column(
         mainAxisSize: MainAxisSize.min,
         spacing: 16,
@@ -58,24 +58,24 @@ class PeriodFilterDialog extends StatelessWidget {
                     : null,
                 trailing: Radio<int>(
                   value: index,
-                  groupValue: state.selectedIndex,
+                  groupValue: state.selectedSeason,
                   onChanged: (val) {
                     if (val != null) {
-                      cubit.selectTempIndex(val);
+                      cubit.updateSelectedSeason(val);
                     }
                   },
                 ),
-                onTap: () => cubit.selectTempIndex(index),
               );
             },
           ),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: state.selectedIndex == null
+              onPressed: state.selectedSeason == null
                   ? null
                   : () {
-                      cubit.applyPeriod(dummyPeriods);
+                      cubit.updateSeason(
+                          dummyPeriods[state.selectedSeason ?? 0].name);
                       Navigator.pop(context);
                     },
               style: ElevatedButton.styleFrom(

@@ -47,6 +47,9 @@ class CardPodium extends StatelessWidget {
         Text(
           name,
           style: white16w600,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
         ),
         Container(
           margin: const EdgeInsets.only(top: 4, bottom: 8),

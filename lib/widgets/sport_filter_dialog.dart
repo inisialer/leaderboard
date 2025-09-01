@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:leaderboard_app/bloc/sport/sport_cubit.dart';
-import 'package:leaderboard_app/bloc/sport/sport_state.dart';
+import 'package:leaderboard_app/bloc/filter/filter_cubit.dart';
+import 'package:leaderboard_app/bloc/filter/filter_state.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/model/sport_dummy.dart';
@@ -13,11 +13,11 @@ class SportFilterDialog extends StatelessWidget {
     required this.cubit,
   });
 
-  final SportCubit cubit;
+  final FilterCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SportCubit, SportState>(builder: (context, state) {
+    return BlocBuilder<FilterCubit, FilterState>(builder: (context, state) {
       final allCombined = [...preferredSports, ...allSports];
 
       return Column(
@@ -57,22 +57,22 @@ class SportFilterDialog extends StatelessWidget {
             shrinkWrap: true,
             physics: const ScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
-              final period = preferredSports[index];
+              final sport = preferredSports[index];
 
               return ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: SvgPicture.asset(period.image),
-                title: Text(period.name),
+                leading: SvgPicture.asset(sport.image),
+                title: Text(sport.name),
                 trailing: Radio<int>(
                   value: index,
-                  groupValue: state.selectedIndex,
+                  groupValue: state.selectedSport,
                   onChanged: (val) {
                     if (val != null) {
-                      cubit.selectTempIndex(val);
+                      cubit.updateSelectedSport(val);
                     }
                   },
                 ),
-                onTap: () => cubit.selectTempIndex(index),
+                onTap: () => cubit.updateSelectedSport(index),
               );
             },
           ),
@@ -96,33 +96,34 @@ class SportFilterDialog extends StatelessWidget {
             shrinkWrap: true,
             physics: const ScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
-              final period = allSports[index];
+              final sport = allSports[index];
               final globalIndex = preferredSports.length + index;
 
               return ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: SvgPicture.asset(period.image),
-                title: Text(period.name),
+                leading: SvgPicture.asset(sport.image),
+                title: Text(sport.name),
                 trailing: Radio<int>(
                   value: globalIndex,
-                  groupValue: state.selectedIndex,
+                  groupValue: state.selectedSport,
                   onChanged: (val) {
                     if (val != null) {
-                      cubit.selectTempIndex(val);
+                      cubit.updateSelectedSport(val);
                     }
                   },
                 ),
-                onTap: () => cubit.selectTempIndex(globalIndex),
+                onTap: () => cubit.updateSelectedSport(globalIndex),
               );
             },
           ),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: state.selectedIndex == null
+              onPressed: state.selectedSport == null
                   ? null
                   : () {
-                      cubit.applySport(allCombined);
+                      cubit.updateSport(
+                          allCombined[state.selectedSport ?? 0].name);
                       Navigator.pop(context);
                     },
               style: ElevatedButton.styleFrom(
