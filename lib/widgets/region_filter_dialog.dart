@@ -6,12 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:leaderboard_app/bloc/filter/filter_cubit.dart';
 import 'package:leaderboard_app/bloc/filter/filter_state.dart';
-import 'package:leaderboard_app/bloc/region/region_cubit.dart';
-import 'package:leaderboard_app/bloc/region/region_state.dart';
-import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/model/region_dummy.dart';
-import 'package:leaderboard_app/model/sport_dummy.dart';
 import 'package:leaderboard_app/widgets/main_textfield.dart';
 
 class RegionFilterDialog extends StatelessWidget {

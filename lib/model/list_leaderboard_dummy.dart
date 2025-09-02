@@ -62,7 +62,7 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
         "name": "Badminton",
         "type": "Tunggal",
         "category": "Tunggal",
-        "region": "Jakarta",
+        "region": "DKI Jakarta",
         "leaderboard": [
           {
             "rank": 1,
@@ -236,7 +236,7 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
         "name": "Tennis Meja",
         "type": "Individual",
         "category": "Tunggal",
-        "region": "Jakarta",
+        "region": "DKI Jakarta",
         "leaderboard": [
           {
             "rank": 1,
@@ -278,8 +278,8 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
       },
       {
         "name": "Mini Soccer",
-        "type": "komunitas",
-        "region": "Jakarta",
+        "type": "Komunitas",
+        "region": "DKI Jakarta",
         "leaderboard": [
           {
             "rank": 1,
@@ -339,7 +339,7 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
       {
         "name": "Badminton",
         "type": "Individual",
-        "category": "Double",
+        "category": "Ganda",
         "region": "Yogyakarta",
         "leaderboard": [
           {
@@ -421,7 +421,7 @@ final List<Map<String, dynamic>> dummyLeaderboard = [
       {
         "name": "Table Tennis",
         "type": "Individual",
-        "category": "Double",
+        "category": "Ganda",
         "region": "Semarang",
         "leaderboard": [
           {

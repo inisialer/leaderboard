@@ -1,14 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:leaderboard_app/bloc/category/category_cubit.dart';
-import 'package:leaderboard_app/bloc/category/category_state.dart';
 import 'package:leaderboard_app/bloc/filter/filter_cubit.dart';
 import 'package:leaderboard_app/bloc/filter/filter_state.dart';
-import 'package:leaderboard_app/bloc/region/region_cubit.dart';
-import 'package:leaderboard_app/bloc/region/region_state.dart';
-import 'package:leaderboard_app/bloc/sport/sport_cubit.dart';
-import 'package:leaderboard_app/bloc/sport/sport_state.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/global_function.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
@@ -31,10 +27,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocBuilder<FilterCubit, FilterState>(
       builder: (context, state) {
         Map<String, dynamic>? sport;
+        log(state.filteredLeaderboard.toString());
         if (state.filteredLeaderboard.isNotEmpty) {
           sport = state.filteredLeaderboard.first;
         }
-
         return Scaffold(
             appBar: AppBar(
               leading: Icon(Icons.arrow_back_ios),
@@ -47,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   spacing: 8,
                   children: [
                     Text(
-                      state.season ?? "Current Season",
+                      state.season ?? sport?['season'],
                       style: white16w600,
                     ),
                     SvgPicture.asset('assets/icons/ic_play.svg')
@@ -77,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? CardResultEmpty()
                 : SlidingUpPanel(
                     minHeight: 210,
+                    maxHeight: MediaQuery.of(context).size.height * 0.81,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(12),
                         topRight: Radius.circular(12)),
@@ -98,17 +95,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               spacing: 4,
                               children: [
                                 CardDropdown(
-                                  title: state.sport ?? 'Mini Soccer',
+                                  title: state.sport ?? sport['name'],
                                   onTap: () {
                                     showSportPicker(context);
                                   },
                                 ),
-
-                                CardDropdown(
-                                  title: state.category ?? 'Komunitas',
-                                  onTap: () {
-                                    showCategorySportPicker(context);
-                                  },
+                                Visibility(
+                                  visible: sport.isNotEmpty &&
+                                      sport['type'] != 'Komunitas',
+                                  child: CardDropdown(
+                                    title: state.category ?? sport['type'],
+                                    onTap: () {
+                                      showCategorySportPicker(context);
+                                    },
+                                  ),
                                 ),
                                 CardDropdown(
                                   title: state.region ?? 'Surabaya',
@@ -116,28 +116,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                     showRegionPicker(context);
                                   },
                                 ),
-
-                                // BlocBuilder<TypeLeaderboardCubit, TypeLeaderboardState?>(
-                                //   builder: (context, region) {
-                                //     return CardDropdown(
-                                //       title:
-                                //           region?.appliedTypeLeaderboard?.name ?? 'Overall',
-                                //       onTap: () {
-                                //         showTypeLeaderboardPicker(context);
-                                //       },
-                                //     );
-                                //   },
-                                // ),
                               ],
                             ),
                           ),
                           BlocBuilder<FilterCubit, FilterState>(
                             builder: (context, filterState) {
-                              final selectedCategory =
-                                  filterState.category?.toLowerCase() ?? '';
+                              final selectedCategory = filterState.category
+                                      ?.toLowerCase() ??
+                                  sport?['category'].toString().toLowerCase() ??
+                                  '';
                               final selectedSport =
-                                  filterState.sport?.toLowerCase() ?? '';
-                              final selectedRegion = filterState.region ?? '';
+                                  filterState.sport?.toLowerCase() ??
+                                      sport?['name'].toString().toLowerCase() ??
+                                      '';
+                              final selectedRegion = filterState.region ??
+                                  sport?['region'].toString().toLowerCase() ??
+                                  '';
 
                               final isMiniSoccer =
                                   selectedSport == 'mini soccer';
@@ -145,7 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               final isGanda = selectedCategory == 'ganda' ||
                                   selectedCategory == 'double';
 
-                              // Ambil item pertama dari filteredLeaderboard
                               final sportData =
                                   filterState.filteredLeaderboard.isNotEmpty
                                       ? filterState.filteredLeaderboard.first
@@ -157,7 +150,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? (sportData['leaderboard'] as List).first
                                   : null;
 
-                              // Tentukan subtitle sesuai tipe
                               String subtitle;
                               if (isMiniSoccer) {
                                 subtitle = selectedRegion.isNotEmpty
@@ -177,7 +169,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 subtitle = '-';
                               }
 
-                              // Tentukan images sesuai tipe
                               List<String> images;
                               if (isMiniSoccer) {
                                 images = [
@@ -214,10 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 images: images,
                                 points: firstItem?['points'] ?? 0,
                                 rank: firstItem?['rank'] ?? 0,
-                                onShare: () {
-                                  print(
-                                      'Share ${isMiniSoccer ? 'komunitas' : 'individual'}!');
-                                },
+                                onShare: () {},
                               );
                             },
                           ),

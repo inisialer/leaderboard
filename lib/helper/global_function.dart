@@ -2,9 +2,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:leaderboard_app/bloc/category/category_cubit.dart';
 import 'package:leaderboard_app/bloc/filter/filter_cubit.dart';
-import 'package:leaderboard_app/bloc/region/region_cubit.dart';
 import 'package:leaderboard_app/bloc/type-leaderboard/type_leaderboard_cubit.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
@@ -175,17 +173,23 @@ void customBottomSheet(BuildContext context, Widget child) {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        return Padding(padding: const EdgeInsets.all(16), child: child);
+        return Padding(
+            padding: EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 16,
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: child);
       });
 }
 
 String getItemImage(Map<String, dynamic> item) {
   if (item.containsKey('image')) {
-    return item['image']; // tunggal / komunitas
+    return item['image'];
   } else if (item.containsKey('players') &&
       (item['players'] as List).isNotEmpty) {
-    return (item['players'] as List)
-        .first['image']; // ganda, ambil player pertama
+    return (item['players'] as List).first['image'];
   }
-  return 'assets/images/default.png'; // fallback
+  return 'assets/images/default.png';
 }

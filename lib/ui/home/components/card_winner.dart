@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:leaderboard_app/helper/color_helper.dart';
-import 'package:leaderboard_app/helper/text_helper.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/ui/home/components/card_podium.dart';
@@ -145,7 +142,6 @@ class CardWinner extends StatelessWidget {
 
       case WinnerType.single:
       case WinnerType.soccer:
-      default:
         return CircleAvatar(
           radius: 20,
           backgroundImage: AssetImage(images.first),
