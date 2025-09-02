@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:leaderboard_app/bloc/filter/filter_cubit.dart';
-import 'package:leaderboard_app/bloc/type-leaderboard/type_leaderboard_cubit.dart';
 import 'package:leaderboard_app/helper/color_helper.dart';
 import 'package:leaderboard_app/helper/text_helper.dart';
 import 'package:leaderboard_app/widgets/category_sport_filter_dialog.dart';
@@ -12,7 +11,6 @@ import 'package:leaderboard_app/widgets/period_filter_dialog.dart';
 import 'package:leaderboard_app/widgets/point_rule_tile.dart';
 import 'package:leaderboard_app/widgets/region_filter_dialog.dart';
 import 'package:leaderboard_app/widgets/sport_filter_dialog.dart';
-import 'package:leaderboard_app/widgets/type_leaderboard_filter_dialog.dart';
 
 void showPointRulesDialog(BuildContext context) {
   customBottomSheet(
@@ -150,12 +148,6 @@ void showCategorySportPicker(BuildContext context) {
   final cubit = context.read<FilterCubit>();
 
   customBottomSheet(context, CategorySportFilterDialog(cubit: cubit));
-}
-
-void showTypeLeaderboardPicker(BuildContext context) {
-  final cubit = context.read<TypeLeaderboardCubit>();
-
-  customBottomSheet(context, TypeLeaderboardFilterDialog(cubit: cubit));
 }
 
 void showLeaderboardItemPicker(BuildContext context) {
