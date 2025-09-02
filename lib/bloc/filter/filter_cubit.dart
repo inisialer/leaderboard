@@ -61,18 +61,24 @@ class FilterCubit extends Cubit<FilterState> {
 
   void _applyFilter() {
     final season = state.season ?? "Current Season"; // default
-    final seasonData = dummyLeaderboard.firstWhere(
-      (e) => e["season"] == season,
-      orElse: () => {},
-    );
+    List<Map<String, dynamic>> sports = [];
+    if (season == "All Time") {
+      for (final seasonData in dummyLeaderboard) {
+        sports.addAll(List<Map<String, dynamic>>.from(seasonData["sports"]));
+      }
+    } else {
+      final seasonData = dummyLeaderboard.firstWhere(
+        (e) => e["season"] == season,
+        orElse: () => {},
+      );
 
-    if (seasonData.isEmpty) {
-      emit(state.copyWith(filteredLeaderboard: []));
-      return;
+      if (seasonData.isEmpty) {
+        emit(state.copyWith(filteredLeaderboard: []));
+        return;
+      }
+
+      sports = List<Map<String, dynamic>>.from(seasonData["sports"]);
     }
-
-    List<Map<String, dynamic>> sports =
-        List<Map<String, dynamic>>.from(seasonData["sports"]);
 
     sports = sports
         .where((s) => s["name"] == (state.sport ?? 'Mini Soccer'))
